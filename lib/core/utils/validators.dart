@@ -10,7 +10,6 @@ String? validateMaiorDeIdade(String? value) {
   }
 
   try {
-    // Converte a string para DateTime
     final partes = value.split('/');
     if (partes.length != 3) return 'Data inválida';
 
@@ -44,4 +43,27 @@ String? validateSenhaSegura(String? value) {
   return regex.hasMatch(value)
       ? null
       : 'Senha fraca. Mín. 8 caracteres, 1 número e 1 símbolo';
+}
+
+String? validateTelefone(String? value) {
+  if (value == null || value.isEmpty) return 'Informe o telefone';
+  if (value.length < 14) return 'Telefone incompleto'; // (##) #####-####
+  return null;
+}
+
+String? validateObrigatorio(String? value, String nomeCampo) {
+  if (value == null || value.trim().isEmpty) return 'Informe $nomeCampo';
+  return null;
+}
+
+String? validateUF(String? value) {
+  if (value == null || value.isEmpty) return 'Informe UF';
+  if (!RegExp(r'^[A-Za-z]{2}$').hasMatch(value)) return 'UF inválida';
+  return null;
+}
+
+String? validateEmail(String? value) {
+  if (value == null || value.isEmpty) return 'Informe o email';
+  if (!value.contains('@') || !value.contains('.')) return 'Email inválido';
+  return null;
 }
