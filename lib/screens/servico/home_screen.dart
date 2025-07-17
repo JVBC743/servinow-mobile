@@ -1,3 +1,4 @@
+// home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:servinow_mobile/core/utils/connectivity_util.dart';
 import 'package:servinow_mobile/core/services/servico_service.dart';
@@ -17,8 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool loading = true;
   bool hasInternet = true;
   String searchText = '';
-  int? categoriaSelecionada;
-  int _currentIndex = 0; 
+  int? categoriaSelecionada; // categoria selecionada pelo usuário
 
   final TextEditingController _searchController = TextEditingController();
 
@@ -71,30 +71,9 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         loading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao carregar serviços: $e')),
-      );
-    }
-  }
-
-  void _navegarPara(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-
-// ORGANIZAR AS ROTAS DPS
-    switch (index) {
-      case 0:
-        break;
-      case 1:
-        Navigator.pushNamed(context, '/agendamentos');
-        break;
-      case 2:
-        Navigator.pushNamed(context, '/perfil');
-        break;
-      case 3:
-        Navigator.pushNamed(context, '/menu');
-        break;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Erro ao carregar serviços: $e')));
     }
   }
 
@@ -104,15 +83,11 @@ class _HomeScreenState extends State<HomeScreen> {
       return Scaffold(
         appBar: AppBar(title: const Text('Serviços')),
         body: const Center(child: Text('Sem conexão com a internet.')),
-        bottomNavigationBar: DownBar(
-          currentIndex: _currentIndex,
-          onTap: _navegarPara,
-        ),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Serviços'), automaticallyImplyLeading: false,),
+      appBar: AppBar(title: const Text('Serviços')),
       body: Column(
         children: [
           Padding(
@@ -130,12 +105,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: const Icon(Icons.clear),
                         onPressed: () {
                           _searchController.clear();
+                          // Listener chamará _carregarServicosECategorias
                         },
                       )
                     : null,
               ),
             ),
           ),
+
+          // Dropdown para seleção de categoria
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: DropdownButtonFormField<int>(
@@ -167,13 +145,16 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
+
           Expanded(
             child: loading
                 ? const Center(child: CircularProgressIndicator())
                 : RefreshIndicator(
                     onRefresh: _carregarServicosECategorias,
                     child: servicos.isEmpty
-                        ? const Center(child: Text('Nenhum serviço encontrado.'))
+                        ? const Center(
+                            child: Text('Nenhum serviço encontrado.'),
+                          )
                         : ListView.builder(
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             itemCount: servicos.length,
@@ -181,20 +162,28 @@ class _HomeScreenState extends State<HomeScreen> {
                               final servico = Map<String, dynamic>.from(
                                 servicos[index],
                               );
+
                               final categoriaMap = servico['categoria_r'];
                               String nomeCategoria = 'Sem categoria';
+
                               if (categoriaMap != null && categoriaMap is Map) {
-                                nomeCategoria = categoriaMap['nome'] ?? nomeCategoria;
+                                nomeCategoria =
+                                    categoriaMap['nome'] ?? nomeCategoria;
                               }
+
                               return ServicoCard(
                                 imageUrl: servico['url_foto'] ?? '',
-                                title: servico['nome_servico'] ?? 'Serviço sem nome',
+                                title:
+                                    servico['nome_servico'] ??
+                                    'Serviço sem nome',
                                 category: nomeCategoria,
                                 description: servico['desc_servico'] ?? '',
                                 onPressed: () {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                      content: Text('Agendamento não implementado ainda'),
+                                      content: Text(
+                                        'Agendamento não implementado ainda',
+                                      ),
                                     ),
                                   );
                                 },
@@ -204,10 +193,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
           ),
         ],
-      ),
-      bottomNavigationBar: DownBar(
-        currentIndex: _currentIndex,
-        onTap: _navegarPara,
       ),
     );
   }
