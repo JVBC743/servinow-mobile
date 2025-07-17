@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:servinow_mobile/screens/auth/cadastro_screen.dart';
 import 'package:servinow_mobile/screens/auth/login_screen.dart';
 
 void main() {
@@ -17,7 +18,8 @@ class ServinowApp extends StatelessWidget {
       initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginScreen(),
-        '/home': (context) => const Placeholder(), // Troque pela tela real depois
+        '/home': (context) => const Placeholder(),
+        '/register': (context) => const CadastroScreen(),
       },
     );
   }
