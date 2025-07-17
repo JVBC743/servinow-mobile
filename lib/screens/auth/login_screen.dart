@@ -161,20 +161,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-
-                // SÓ TENTANDO, REMOVER DAKI
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green[700], 
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/downbar-teste');
-                  },
-                  child: const Text('Testar DownBar (pular login)'),
-                ),
-                const SizedBox(height: 16), 
-                // ATÉ AKI
-
                 const SizedBox(height: 32), 
               ],
             ),

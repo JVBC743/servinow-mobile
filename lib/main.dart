@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:servinow_mobile/screens/auth/cadastro_screen.dart';
 import 'package:servinow_mobile/screens/auth/login_screen.dart';
 import 'package:servinow_mobile/core/widgets/downbar.dart';
+import 'package:servinow_mobile/screens/servico/home_screen.dart';
 import 'package:servinow_mobile/screens/test/dowbar_test.dart'; //REMOVER DPS
 
 void main() {
@@ -20,9 +21,9 @@ class ServinowApp extends StatelessWidget {
       initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginScreen(),
-        '/home': (context) => const Placeholder(),
+        '/home': (context) => const HomeScreen(),
         '/register': (context) => const CadastroScreen(),
-        '/downbar-teste': (context) => const DownBarTeste(), //REMOVER DPS, CALMA JOSÉ, É SÓ UM TESTE
+        '/downbar-teste': (context) => const DownBarTeste(),
       },
     );
   }
