@@ -1,21 +1,52 @@
-# servinow_mobile
+# ServiNow Mobile
 
-A new Flutter project.
+Aplicativo Flutter para agendamento e visualização de serviços. Desenvolvido com boas práticas de arquitetura, uso de componentes reutilizáveis, integração com API e suporte a navegação entre múltiplas telas.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Funcionalidades
 
-A few resources to get you started if this is your first Flutter project:
+- Login e autenticação via API
+- Cadastro de usuários com validação de CPF e data de nascimento
+- Recuperação de senha usando número de telefone
+- Visualização de serviços (cards com imagem e botão de agendamento)
+- Agendamento de serviços (em desenvolvimento)
+- Perfil do usuário (em desenvolvimento)
+- Navegação por abas (DownBar)
+- Tema global personalizado
+- Tratamento de erros de rede e feedback ao usuário via SnackBar
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📱 Tecnologias e Recursos Usados
 
-## 📁 Estrutura do Projeto
+### 🔹 Flutter/Dart
+
+- Estrutura de projeto modular: `screens/`, `widgets/`, `services/`
+- Navegação com **Named Routes** (`Navigator.pushReplacementNamed`)
+- Requisições assíncronas com `Future`, `async/await`
+- `BottomNavigationBar` customizada com `DownBar`
+- Criação de **widgets personalizados** (ex: `ServicoCard`)
+- Validação de formulários com `GlobalKey<FormState>`
+- SnackBar para mensagens dinâmicas de sistema
+
+### 🔹 Integração com API
+
+- Consumo de API com `http` (via `ApiService`)
+- Organização dos endpoints por serviços (`ServicoService`, `CadastroService`, etc.)
+- Autenticação com `useAuth: true`
+- Tratamento de erros de resposta e validação
+
+### 🔹 UI e Experiência do Usuário
+
+- Tema global com `ThemeData`, aplicado no `MaterialApp`
+- Cores e fontes consistentes
+- `Image.network` com `loadingBuilder` e `errorBuilder`
+- Feedback visual para funcionalidades ainda em desenvolvimento
+
+---
+
+## 📁 Estrutura de Pastas
 
 A seguir, a organização da pasta `lib/`, projetada para facilitar a escalabilidade e a manutenção do app Flutter:
 
@@ -33,3 +64,13 @@ lib/
 │   ├── perfil/                     # Visualização e edição de perfil do usuário
 │   └── info/                       # Telas estáticas como Sobre Nós e Termos de Uso
 └── providers/                      # Gerenciamento de estado (ex: autenticação, usuário logado, cache)
+
+
+---
+
+## 📌 Em Desenvolvimento
+
+- Tela de **agendamento** com calendário
+- Tela de **menu lateral**
+- Integração com **notificações**
+- Upload de arquivos e foto de perfil
