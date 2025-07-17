@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:servinow_mobile/core/widgets/downbar.dart';
 
 class DownBar extends StatelessWidget {
   final int currentIndex;
@@ -11,6 +12,7 @@ class DownBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       currentIndex: currentIndex,
       onTap: onTap,
 
@@ -25,8 +27,9 @@ class DownBar extends StatelessWidget {
           icon: Icon(Icons.calendar_today),
           label: 'Agendamentos',
         ),
-        // BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Menu'),
+
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
+        BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Menu'),
       ],
     );
   }
