@@ -23,7 +23,6 @@ class ServinowApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/home': (context) => const HomeScreen(),
         '/register': (context) => const CadastroScreen(),
-        '/downbar-teste': (context) => const DownBarTeste(),
         '/forgot-password': (context) => const ForgotPasswordScreen(),
       },
     );
