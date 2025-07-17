@@ -8,6 +8,11 @@ class TermosDeUsoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+       appBar: AppBar(
+        backgroundColor:  const Color(0xFF21a7a7),
+        title: const Text('Termos de Uso e Política de Privacidade'),
+        centerTitle: true,
+      ),
       bottomNavigationBar: const DownBar(currentIndex: 2),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -17,7 +22,7 @@ class TermosDeUsoScreen extends StatelessWidget {
             children: [
               const Center(
                 child: Text(
-                  'Termos de Uso e Política de Privacidade - ServiNow',
+                  '',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 22,
