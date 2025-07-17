@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:servinow_mobile/screens/auth/cadastro_screen.dart';
+import 'package:servinow_mobile/screens/auth/forgot_password_screen.dart';
 import 'package:servinow_mobile/screens/auth/login_screen.dart';
 import 'package:servinow_mobile/core/widgets/downbar.dart';
 import 'package:servinow_mobile/screens/servico/home_screen.dart';
@@ -22,6 +23,8 @@ class ServinowApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/home': (context) => const HomeScreen(),
         '/register': (context) => const CadastroScreen(),
+        '/downbar-teste': (context) => const DownBarTeste(),
+        '/forgot-password': (context) => const ForgotPasswordScreen(),
       },
     );
   }

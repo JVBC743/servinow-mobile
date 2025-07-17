@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Serviços')),
+      appBar: AppBar(title: const Text('Serviços'), automaticallyImplyLeading: false,),
       body: Column(
         children: [
           Padding(
