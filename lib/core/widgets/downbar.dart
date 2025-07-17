@@ -18,20 +18,15 @@ class DownBar extends StatelessWidget {
         Navigator.pushReplacementNamed(context, '/home');
         break;
       case 1:
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Agendamentos em desenvolvimento')),
-        );
+        Navigator.pushReplacementNamed(context, '/sobre-nos');
         break;
       case 2:
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Perfil em desenvolvimento')),
-        );
+        Navigator.pushReplacementNamed(context, '/termos-uso');
         break;
-      case 3:
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Menu em desenvolvimento')),
-        );
+      case 1:
+       Navigator.pushReplacementNamed(context, '/termos-uso');
         break;
+
     }
   }
 
@@ -47,12 +42,12 @@ class DownBar extends StatelessWidget {
       showUnselectedLabels: false,
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Início'),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Sobre nós'),
+        BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Termos de Uso'),
         BottomNavigationBarItem(
-          icon: Icon(Icons.calendar_today),
-          label: 'Agendamentos',
+          icon: Icon(Icons.logout),
+          label: 'Desconectar',
         ),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
-        BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Menu'),
       ],
     );
   }
