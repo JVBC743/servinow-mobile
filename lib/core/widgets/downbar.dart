@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:servinow_mobile/core/services/auth_service.dart';
 
 class DownBar extends StatelessWidget {
   final int currentIndex;
@@ -12,7 +13,6 @@ class DownBar extends StatelessWidget {
       onTap!(index);
     }
 
-    // Navega para a rota correspondente
     switch (index) {
       case 0:
         Navigator.pushReplacementNamed(context, '/home');
@@ -23,10 +23,55 @@ class DownBar extends StatelessWidget {
       case 2:
         Navigator.pushReplacementNamed(context, '/termos-uso');
         break;
-      case 1:
-       Navigator.pushReplacementNamed(context, '/termos-uso');
-        break;
+      case 3:
+        showDialog(
+          context: context,
+          barrierDismissible: false, // impede fechar o diálogo tocando fora
+          builder: (ctx) {
+            bool isLoading = false;
 
+            return StatefulBuilder(
+              builder: (ctx, setState) {
+                return AlertDialog(
+                  title: const Text('Sair do App'),
+                  content: isLoading
+                      ? SizedBox(
+                          height: 60,
+                          child: Center(child: CircularProgressIndicator()),
+                        )
+                      : const Text('Tem certeza que deseja sair?'),
+                  actions: isLoading
+                      ? []
+                      : [
+                          TextButton(
+                            onPressed: () => Navigator.pop(ctx),
+                            child: const Text('Cancelar'),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              setState(() => isLoading = true);
+
+                              await AuthService.logout();
+
+                              // Fecha o diálogo após logout
+                              Navigator.pop(ctx);
+
+                              // Navega para login limpando histórico
+                              Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                '/login',
+                                (route) => false,
+                              );
+                            },
+                            child: const Text('Sair'),
+                          ),
+                        ],
+                );
+              },
+            );
+          },
+        );
+        break;
     }
   }
 
@@ -44,10 +89,7 @@ class DownBar extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Início'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Sobre nós'),
         BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Termos de Uso'),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.logout),
-          label: 'Desconectar',
-        ),
+        BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'Desconectar'),
       ],
     );
   }

@@ -3,6 +3,7 @@ import 'package:servinow_mobile/core/utils/connectivity_util.dart';
 import 'package:servinow_mobile/core/services/servico_service.dart';
 import 'package:servinow_mobile/core/widgets/servico_card.dart';
 import 'package:servinow_mobile/core/widgets/downbar.dart';
+import 'package:servinow_mobile/core/services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,7 +27,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _carregarServicosECategorias();
+
+    // Executa após o frame inicial
+    Future.microtask(() async {
+      final logado = await _verificarLogin();
+      if (logado) {
+        await _carregarServicosECategorias();
+      }
+    });
+
     _searchController.addListener(() {
       final texto = _searchController.text;
       if (texto != searchText) {
@@ -34,6 +43,19 @@ class _HomeScreenState extends State<HomeScreen> {
         _carregarServicosECategorias();
       }
     });
+  }
+
+  // Verifica se o usuário está logado
+  Future<bool> _verificarLogin() async {
+    final token = await AuthService.isLoggedIn();
+
+    if (!token) {
+      if (context.mounted) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
+      return false;
+    }
+    return true;
   }
 
   @override
