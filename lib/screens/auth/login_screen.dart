@@ -78,11 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   child: Column(
                     children: [
-                      Image.asset(
-                        'assets/logo.png',
-                        width: 300, 
-                        height: 150,
-                      ),
+                      Image.asset('assets/logo.png', width: 300, height: 150),
                     ],
                   ),
                 ),
@@ -165,7 +161,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 32), // Espaço inferior opcional
+
+                // SÓ TENTANDO, REMOVER DAKI
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green[700], 
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/downbar-teste');
+                  },
+                  child: const Text('Testar DownBar (pular login)'),
+                ),
+                const SizedBox(height: 16), 
+                // ATÉ AKI
+
+                const SizedBox(height: 32), 
               ],
             ),
           ),
