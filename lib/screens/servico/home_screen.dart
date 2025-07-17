@@ -1,9 +1,8 @@
-// home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:servinow_mobile/core/utils/connectivity_util.dart';
 import 'package:servinow_mobile/core/services/servico_service.dart';
 import 'package:servinow_mobile/core/widgets/servico_card.dart';
-import 'package:servinow_mobile/core/widgets/downbar.dart'; 
+import 'package:servinow_mobile/core/widgets/downbar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,9 +17,11 @@ class _HomeScreenState extends State<HomeScreen> {
   bool loading = true;
   bool hasInternet = true;
   String searchText = '';
-  int? categoriaSelecionada; // categoria selecionada pelo usuário
+  int? categoriaSelecionada;
 
   final TextEditingController _searchController = TextEditingController();
+
+  int _selectedIndex = 0; // índice da DownBar
 
   @override
   void initState() {
@@ -83,6 +84,15 @@ class _HomeScreenState extends State<HomeScreen> {
       return Scaffold(
         appBar: AppBar(title: const Text('Serviços')),
         body: const Center(child: Text('Sem conexão com a internet.')),
+        bottomNavigationBar: DownBar(
+          currentIndex: _selectedIndex,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+            // A navegação já acontece dentro do DownBar
+          },
+        ),
       );
     }
 
@@ -105,15 +115,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: const Icon(Icons.clear),
                         onPressed: () {
                           _searchController.clear();
-                          // Listener chamará _carregarServicosECategorias
                         },
                       )
                     : null,
               ),
             ),
           ),
-
-          // Dropdown para seleção de categoria
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: DropdownButtonFormField<int>(
@@ -145,7 +152,6 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
-
           Expanded(
             child: loading
                 ? const Center(child: CircularProgressIndicator())
@@ -193,6 +199,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
           ),
         ],
+      ),
+      bottomNavigationBar: DownBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
       ),
     );
   }
