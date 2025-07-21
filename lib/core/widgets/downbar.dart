@@ -24,53 +24,7 @@ class DownBar extends StatelessWidget {
         Navigator.pushReplacementNamed(context, '/termos-uso');
         break;
       case 3:
-        showDialog(
-          context: context,
-          barrierDismissible: false, // impede fechar o diálogo tocando fora
-          builder: (ctx) {
-            bool isLoading = false;
-
-            return StatefulBuilder(
-              builder: (ctx, setState) {
-                return AlertDialog(
-                  title: const Text('Sair do App'),
-                  content: isLoading
-                      ? SizedBox(
-                          height: 60,
-                          child: Center(child: CircularProgressIndicator()),
-                        )
-                      : const Text('Tem certeza que deseja sair?'),
-                  actions: isLoading
-                      ? []
-                      : [
-                          TextButton(
-                            onPressed: () => Navigator.pop(ctx),
-                            child: const Text('Cancelar'),
-                          ),
-                          TextButton(
-                            onPressed: () async {
-                              setState(() => isLoading = true);
-
-                              await AuthService.logout();
-
-                              // Fecha o diálogo após logout
-                              Navigator.pop(ctx);
-
-                              // Navega para login limpando histórico
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                '/login',
-                                (route) => false,
-                              );
-                            },
-                            child: const Text('Sair'),
-                          ),
-                        ],
-                );
-              },
-            );
-          },
-        );
+        Navigator.pushReplacementNamed(context, '/menu');
         break;
     }
   }
@@ -88,8 +42,11 @@ class DownBar extends StatelessWidget {
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Início'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Sobre nós'),
-        BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Termos de Uso'),
-        BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'Desconectar'),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.insert_drive_file),
+          label: 'Termos de Uso',
+        ), // ícone alterado
+        BottomNavigationBarItem(icon: Icon(Icons.menu_open), label: 'Menu'),
       ],
     );
   }

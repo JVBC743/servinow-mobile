@@ -5,6 +5,7 @@ class ServicoCard extends StatelessWidget {
   final String title;
   final String category;
   final String description;
+  final String? preco; // Novo campo opcional para o preço
   final VoidCallback? onPressed;
 
   const ServicoCard({
@@ -13,6 +14,7 @@ class ServicoCard extends StatelessWidget {
     required this.title,
     required this.category,
     required this.description,
+    this.preco, // Adicione o preço ao construtor
     this.onPressed,
   });
 
@@ -56,11 +58,37 @@ class ServicoCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    if (preco != null)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          preco!,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
                 const SizedBox(height: 4),
                 Text(category, style: const TextStyle(color: Colors.grey)),
@@ -78,22 +106,7 @@ class ServicoCard extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: onPressed,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 10,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    'Agendar',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ), // força o texto branco
-                  ),
+                  child: const Text('Agendar'),
                 ),
               ],
             ),

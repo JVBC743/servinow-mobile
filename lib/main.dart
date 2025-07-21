@@ -7,7 +7,7 @@ import 'package:servinow_mobile/screens/servico/home_screen.dart';
 import 'package:servinow_mobile/screens/menu/sobre_nos.dart';
 import 'package:servinow_mobile/screens/menu/termos_de_uso.dart';
 import 'package:servinow_mobile/core/theme/app_theme.dart';
-
+import 'package:servinow_mobile/screens/info/menu_screem.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
         '/forgot-password': (context) => const ForgotPasswordScreen(),
         '/sobre-nos': (context) => const SobreNosScreen(),
         '/termos-uso': (context) => const TermosDeUsoScreen(),
+        '/menu': (context) => const MenuScreen(),
       },
     );
   }

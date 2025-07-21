@@ -191,6 +191,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     'Serviço sem nome',
                                 category: nomeCategoria,
                                 description: servico['desc_servico'] ?? '',
+                                preco: servico['preco'] != null
+                                    ? 'R\$ ${servico['preco']}'
+                                    : null,
                                 onPressed: () {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
