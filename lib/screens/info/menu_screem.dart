@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:servinow_mobile/core/services/auth_service.dart';
 import 'package:servinow_mobile/core/widgets/downbar.dart';
 import 'package:servinow_mobile/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
@@ -13,11 +14,41 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   ThemeMode _themeMode = MyApp.themeModeNotifier.value;
 
+  @override
+  void initState() {
+    super.initState();
+    _carregarTemaSalvo();
+  }
+
+  Future<void> _carregarTemaSalvo() async {
+    final prefs = await SharedPreferences.getInstance();
+    final themeStr = prefs.getString('theme_mode');
+    setState(() {
+      switch (themeStr) {
+        case 'ThemeMode.dark':
+          _themeMode = ThemeMode.dark;
+          break;
+        case 'ThemeMode.light':
+          _themeMode = ThemeMode.light;
+          break;
+        default:
+          _themeMode = ThemeMode.system;
+      }
+      MyApp.themeModeNotifier.value = _themeMode;
+    });
+  }
+
+  Future<void> _salvarTemaEscolhido(ThemeMode mode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('theme_mode', mode.toString());
+  }
+
   void _trocarTema(ThemeMode novoModo) {
     setState(() {
       _themeMode = novoModo;
     });
     MyApp.themeModeNotifier.value = novoModo;
+    _salvarTemaEscolhido(novoModo);
   }
 
   Future<void> _confirmLogout(BuildContext context) async {
