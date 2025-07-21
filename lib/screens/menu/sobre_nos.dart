@@ -7,31 +7,17 @@ class SobreNosScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final integrantes = [
-      {
-        'nome': 'Matheus Pantoja de Morais',
-        'imagem': 'assets/matheus.jpg',
-      },
+      {'nome': 'Matheus Pantoja de Morais', 'imagem': 'assets/matheus.jpg'},
       {
         'nome': 'Manoel de Jesus Moreira de Aguiar',
         'imagem': 'assets/manoel.png',
       },
-      {
-        'nome': 'José Claion Martins de Sousa',
-        'imagem': 'assets/claion.png',
-      },
-      {
-        'nome': 'João Victor Brum de Castro',
-        'imagem': 'assets/joao.png',
-      },
+      {'nome': 'José Claion Martins de Sousa', 'imagem': 'assets/claion.png'},
+      {'nome': 'João Victor Brum de Castro', 'imagem': 'assets/joao.png'},
     ];
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      appBar: AppBar(
-        backgroundColor:  const Color(0xFF21a7a7),
-        title: const Text('Sobre Nós'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Sobre Nós')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -74,10 +60,7 @@ class SobreNosScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       integrante['nome']!,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                      ),
+                      style: const TextStyle(color: Colors.black, fontSize: 14),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -87,9 +70,7 @@ class SobreNosScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const DownBar(
-        currentIndex: 1, 
-      ),
+      bottomNavigationBar: const DownBar(currentIndex: 1),
     );
   }
 }

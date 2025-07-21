@@ -6,20 +6,20 @@ import 'package:servinow_mobile/core/widgets/downbar.dart';
 import 'package:servinow_mobile/screens/servico/home_screen.dart';
 import 'package:servinow_mobile/screens/menu/sobre_nos.dart';
 import 'package:servinow_mobile/screens/menu/termos_de_uso.dart';
+import 'package:servinow_mobile/core/theme/app_theme.dart';
 
 void main() {
-  runApp(const ServinowApp());
+  runApp(const MyApp());
 }
 
-class ServinowApp extends StatelessWidget {
-  const ServinowApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ServiNow',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.indigo),
+      theme: AppTheme.lightTheme,
       initialRoute: '/home',
       routes: {
         '/login': (context) => const LoginScreen(),
@@ -28,7 +28,6 @@ class ServinowApp extends StatelessWidget {
         '/forgot-password': (context) => const ForgotPasswordScreen(),
         '/sobre-nos': (context) => const SobreNosScreen(),
         '/termos-uso': (context) => const TermosDeUsoScreen(),
-
       },
     );
   }

@@ -7,11 +7,8 @@ class TermosDeUsoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-       appBar: AppBar(
-        backgroundColor:  const Color(0xFF21a7a7),
+      appBar: AppBar(
         title: const Text('Termos de Uso e Política de Privacidade'),
-        centerTitle: true,
       ),
       bottomNavigationBar: const DownBar(currentIndex: 2),
       body: SafeArea(
@@ -103,7 +100,7 @@ class TermosDeUsoScreen extends StatelessWidget {
                 'Matheus Pantoja de Morais (mateus4pantoja@gmail.com)\n'
                 'Manoel de Jesus Moreira de Aguiar (manoelmaguiar@gmail.com)',
               ),
-              const SizedBox(height: 60), 
+              const SizedBox(height: 60),
             ],
           ),
         ),
@@ -155,25 +152,29 @@ class TermosDeUsoScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: items
-            .map((item) => Padding(
-                  padding: const EdgeInsets.only(bottom: 6),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        '• ',
-                        style: TextStyle(fontSize: 16, color: Colors.black),
-                      ),
-                      Expanded(
-                        child: Text(
-                          item,
-                          style:
-                              const TextStyle(fontSize: 16, color: Colors.black),
+            .map(
+              (item) => Padding(
+                padding: const EdgeInsets.only(bottom: 6),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      '• ',
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    ),
+                    Expanded(
+                      child: Text(
+                        item,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
                         ),
                       ),
-                    ],
-                  ),
-                ))
+                    ),
+                  ],
+                ),
+              ),
+            )
             .toList(),
       ),
     );
