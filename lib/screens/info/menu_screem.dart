@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:servinow_mobile/core/services/auth_service.dart';
 import 'package:servinow_mobile/core/widgets/downbar.dart';
+import 'package:servinow_mobile/main.dart';
 
-class MenuScreen extends StatelessWidget {
+class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
+
+  @override
+  State<MenuScreen> createState() => _MenuScreenState();
+}
+
+class _MenuScreenState extends State<MenuScreen> {
+  ThemeMode _themeMode = MyApp.themeModeNotifier.value;
+
+  void _trocarTema(ThemeMode novoModo) {
+    setState(() {
+      _themeMode = novoModo;
+    });
+    MyApp.themeModeNotifier.value = novoModo;
+  }
 
   Future<void> _confirmLogout(BuildContext context) async {
     final result = await showDialog<bool>(
@@ -51,6 +66,36 @@ class MenuScreen extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(context, '/agendamentos');
             },
+          ),
+          const Divider(),
+          ListTile(
+            leading: Icon(
+              Icons.brightness_6,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            title: const Text('Tema', style: TextStyle(fontSize: 18)),
+            subtitle: Text(
+              _themeMode == ThemeMode.system
+                  ? 'Automático'
+                  : _themeMode == ThemeMode.dark
+                  ? 'Escuro'
+                  : 'Claro',
+            ),
+            trailing: DropdownButton<ThemeMode>(
+              value: _themeMode,
+              items: const [
+                DropdownMenuItem(
+                  value: ThemeMode.system,
+                  child: Text('Automático'),
+                ),
+                DropdownMenuItem(value: ThemeMode.light, child: Text('Claro')),
+                DropdownMenuItem(value: ThemeMode.dark, child: Text('Escuro')),
+              ],
+              onChanged: (mode) {
+                if (mode != null) _trocarTema(mode);
+              },
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 24),
           ),
           const Divider(),
           _MenuOption(
