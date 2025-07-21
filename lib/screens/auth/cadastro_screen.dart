@@ -155,84 +155,91 @@ class _CadastroScreenState extends State<CadastroScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GradientBackground(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-          child: Column(
-            children: [
-              Card(
-                elevation: 6,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: SizedBox(
-                  height: 150,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/logo.png', width: 300, height: 150),
-                      ],
+    return Theme(
+      data: ThemeData.light(),
+      child: Scaffold(
+        body: GradientBackground(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+            child: Column(
+              children: [
+                Card(
+                  elevation: 6,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: SizedBox(
+                    height: 150,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/logo.png',
+                            width: 300,
+                            height: 150,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 24),
-              Expanded(
-                child: Card(
-                  elevation: 8,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: PageView(
-                            controller: _pageController,
-                            physics: const NeverScrollableScrollPhysics(),
+                const SizedBox(height: 24),
+                Expanded(
+                  child: Card(
+                    elevation: 8,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: PageView(
+                              controller: _pageController,
+                              physics: const NeverScrollableScrollPhysics(),
+                              children: [
+                                _buildStep1(),
+                                _buildStep2(),
+                                _buildStep3(),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              _buildStep1(),
-                              _buildStep2(),
-                              _buildStep3(),
+                              _currentStep > 0
+                                  ? ElevatedButton.icon(
+                                      onPressed: _backStep,
+                                      icon: const Icon(Icons.arrow_back),
+                                      label: const Text('Voltar'),
+                                    )
+                                  : ElevatedButton.icon(
+                                      onPressed: () {
+                                        Navigator.of(
+                                          context,
+                                        ).pushReplacementNamed('/login');
+                                      },
+                                      icon: const Icon(Icons.login),
+                                      label: const Text('Já tenho conta'),
+                                    ),
+                              ElevatedButton(
+                                onPressed: _nextStep,
+                                child: Text(
+                                  _currentStep < 2 ? 'Próximo' : 'Cadastrar',
+                                ),
+                              ),
                             ],
                           ),
-                        ),
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _currentStep > 0
-                                ? ElevatedButton.icon(
-                                    onPressed: _backStep,
-                                    icon: const Icon(Icons.arrow_back),
-                                    label: const Text('Voltar'),
-                                  )
-                                : ElevatedButton.icon(
-                                    onPressed: () {
-                                      Navigator.of(
-                                        context,
-                                      ).pushReplacementNamed('/login');
-                                    },
-                                    icon: const Icon(Icons.login),
-                                    label: const Text('Já tenho conta'),
-                                  ),
-                            ElevatedButton(
-                              onPressed: _nextStep,
-                              child: Text(
-                                _currentStep < 2 ? 'Próximo' : 'Cadastrar',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
