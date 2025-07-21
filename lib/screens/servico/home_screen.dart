@@ -4,6 +4,8 @@ import 'package:servinow_mobile/core/services/servico_service.dart';
 import 'package:servinow_mobile/core/widgets/servico_card.dart';
 import 'package:servinow_mobile/core/widgets/downbar.dart';
 import 'package:servinow_mobile/core/services/auth_service.dart';
+import 'package:servinow_mobile/core/services/agendamento_service.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
 
   int _selectedIndex = 0; // índice da DownBar
+  int? usuarioLogadoId;
 
   @override
   void initState() {
@@ -32,6 +35,10 @@ class _HomeScreenState extends State<HomeScreen> {
     Future.microtask(() async {
       final logado = await _verificarLogin();
       if (logado) {
+        final usuario = await AuthService.getUser();
+        setState(() {
+          usuarioLogadoId = usuario?['id'];
+        });
         await _carregarServicosECategorias();
       }
     });
@@ -98,6 +105,143 @@ class _HomeScreenState extends State<HomeScreen> {
         context,
       ).showSnackBar(SnackBar(content: Text('Erro ao carregar serviços: $e')));
     }
+  }
+
+  void _showAgendamentoDialog(BuildContext context, int idServico) {
+    final _dataController = TextEditingController();
+    final _descricaoController = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
+    final _dataMaskFormatter = MaskTextInputFormatter(
+      mask: '##/##/####',
+      filter: {"#": RegExp(r'[0-9]')},
+    );
+    bool isLoading = false;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            title: const Text('Agendar Serviço'),
+            content: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextFormField(
+                    controller: _dataController,
+                    inputFormatters: [_dataMaskFormatter],
+                    decoration: const InputDecoration(
+                      labelText: 'Data do agendamento',
+                      hintText: 'dd/mm/aaaa',
+                      prefixIcon: Icon(Icons.calendar_today),
+                    ),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Informe a data';
+                      }
+                      if (!RegExp(r'^\d{2}/\d{2}/\d{4}$').hasMatch(value)) {
+                        return 'Formato inválido';
+                      }
+                      return null;
+                    },
+                    onTap: () async {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      final picked = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime.now().add(const Duration(days: 365)),
+                      );
+                      if (picked != null) {
+                        _dataController.text =
+                            '${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}';
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _descricaoController,
+                    decoration: const InputDecoration(
+                      labelText: 'Descrição da solicitação',
+                      hintText: 'Descreva sua necessidade (20-50 caracteres)',
+                      prefixIcon: Icon(Icons.description),
+                    ),
+                    maxLength: 50,
+                    minLines: 2,
+                    maxLines: 3,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Informe a descrição';
+                      }
+                      if (value.length < 20) {
+                        return 'Mínimo 20 caracteres';
+                      }
+                      if (value.length > 50) {
+                        return 'Máximo 50 caracteres';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Cancelar'),
+              ),
+              ElevatedButton(
+                onPressed: isLoading
+                    ? null
+                    : () async {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          setState(() => isLoading = true);
+                          try {
+                            final dados = {
+                              'id_servico': idServico.toString(),
+                              'data': _dataController.text,
+                              'descricao': _descricaoController.text,
+                            };
+                            final sucesso = await AgendamentoService.Agendar(
+                              dados,
+                            );
+                            Navigator.of(context).pop();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  sucesso
+                                      ? 'Agendamento enviado com sucesso!'
+                                      : 'Erro ao agendar serviço.',
+                                ),
+                              ),
+                            );
+                          } catch (e) {
+                            setState(() => isLoading = false);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Erro ao agendar serviço: ${e.toString()}',
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                      },
+                child: isLoading
+                    ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Text('Agendar'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -194,13 +338,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 preco: servico['preco'] != null
                                     ? 'R\$ ${servico['preco']}'
                                     : null,
+                                idProvedor: servico['prestador']?['id'],
+                                idUsuarioLogado:
+                                    usuarioLogadoId, // agora síncrono!
                                 onPressed: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        'Agendamento não implementado ainda',
-                                      ),
-                                    ),
+                                  _showAgendamentoDialog(
+                                    context,
+                                    servico['id'],
                                   );
                                 },
                               );

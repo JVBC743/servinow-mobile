@@ -5,8 +5,10 @@ class ServicoCard extends StatelessWidget {
   final String title;
   final String category;
   final String description;
-  final String? preco; // Novo campo opcional para o preço
+  final String? preco;
   final VoidCallback? onPressed;
+  final int? idProvedor;
+  final int? idUsuarioLogado;
 
   const ServicoCard({
     super.key,
@@ -14,12 +16,19 @@ class ServicoCard extends StatelessWidget {
     required this.title,
     required this.category,
     required this.description,
-    this.preco, // Adicione o preço ao construtor
+    this.preco,
     this.onPressed,
+    this.idProvedor,
+    this.idUsuarioLogado,
   });
 
   @override
   Widget build(BuildContext context) {
+    final isMeuServico =
+        idProvedor != null &&
+        idUsuarioLogado != null &&
+        idProvedor == idUsuarioLogado;
+
     return Card(
       elevation: 3,
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -98,16 +107,36 @@ class ServicoCard extends StatelessWidget {
             ),
           ),
 
-          // 💰 Rodapé com botão
+          // 💰 Rodapé com botão ou aviso
           Padding(
             padding: const EdgeInsets.all(12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ElevatedButton(
-                  onPressed: onPressed,
-                  child: const Text('Agendar'),
-                ),
+                if (isMeuServico)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.orange.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: const Text(
+                      'Seu serviço aqui',
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  )
+                else
+                  ElevatedButton(
+                    onPressed: onPressed,
+                    child: const Text('Agendar'),
+                  ),
               ],
             ),
           ),

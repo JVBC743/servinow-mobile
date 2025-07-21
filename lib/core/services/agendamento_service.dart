@@ -3,7 +3,7 @@ import 'api_service.dart';
 
 class AgendamentoService {
   static Future<bool> Agendar(Map<String, dynamic> dados) async {
-    final response = await ApiService.post('/agendamentos', dados);
+    final response = await ApiService.post('/agendamentos', dados, useAuth: true);
 
     if (response.statusCode == 201 || response.statusCode == 200) {
       final data = json.decode(response.body);
