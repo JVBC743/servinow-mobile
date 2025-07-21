@@ -15,7 +15,7 @@ class UsuarioService {
 
   static Future<bool> editarUsuario(int id, Map<String, dynamic> dados,) async {
     final response = await ApiService.post(
-      '/usuario/$id',
+      '/update/usuario/$id',
       dados,
       useAuth: true,
     );

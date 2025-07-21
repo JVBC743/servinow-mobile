@@ -95,12 +95,17 @@ class _EditarPerfilScreenState extends State<EditarPerfilScreen> {
     };
 
     try {
-      await UsuarioService.editarUsuario(widget.usuarioId, dados);
+      final resultado = await UsuarioService.editarUsuario(
+        widget.usuarioId,
+        dados,
+      );
       setState(() => isLoading = false);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Perfil atualizado com sucesso!')),
       );
-      Navigator.of(context).pop(true);
+      Navigator.of(
+        context,
+      ).pushReplacementNamed('/perfil', arguments: widget.usuarioId);
     } catch (e) {
       setState(() => isLoading = false);
       ScaffoldMessenger.of(
