@@ -6,6 +6,12 @@ class SobreNosScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark
+        ? Colors.white
+        : const Color.fromARGB(179, 0, 0, 0);
+    final titleColor = isDark ? Colors.white : Colors.black;
+
     final integrantes = [
       {'nome': 'Matheus Pantoja de Morais', 'imagem': 'assets/matheus.jpg'},
       {
@@ -23,21 +29,18 @@ class SobreNosScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'Olá! Somos um grupo sem fins lucrativos, afinal, o que importa para nós é aquela nota boa que devemos ter no final do semestre! Brincadeiras à parte, buscamos oferecer os melhores sistemas para cada contexto que os nossos clientes (no caso, o professor) solicitarem.\n\nAlém disso, se quiser, revise os Termos de Compromisso e de Privacidade que o site oferece aos nossos clientes.',
-              style: TextStyle(
-                fontSize: 16,
-                color: Color.fromARGB(179, 0, 0, 0),
-              ),
+              style: TextStyle(fontSize: 16, color: textColor),
               textAlign: TextAlign.justify,
             ),
             const SizedBox(height: 32),
-            const Text(
+            Text(
               'Integrantes',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: titleColor,
               ),
               textAlign: TextAlign.center,
             ),
@@ -60,7 +63,7 @@ class SobreNosScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       integrante['nome']!,
-                      style: const TextStyle(color: Colors.black, fontSize: 14),
+                      style: TextStyle(color: titleColor, fontSize: 14),
                       textAlign: TextAlign.center,
                     ),
                   ],
